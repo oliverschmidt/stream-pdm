@@ -79,8 +79,6 @@ void main(void)
     }
   }
 
-#if 1
-
   printf("- %d\n\nInitializing %s ", eth_init, eth_name);
   if (ip65_init(eth_init))
   {
@@ -135,10 +133,6 @@ void main(void)
       return;
     }
   }
-
-#else
-url = "http://www.myhost.com/myfile.stream";
-#endif
 
   clrscr();
   gotoxy(0, 20);
