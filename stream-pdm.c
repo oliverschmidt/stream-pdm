@@ -12,11 +12,6 @@
 #include "w5100_http.h"
 #include "linenoise.h"
 
-// Both pragmas are obligatory to have cc65 generate code
-// suitable to access the W5100 auto-increment registers.
-#pragma optimize      (on)
-#pragma static-locals (on)
-
 void streamafterexit(uint8_t eth_init);
 
 void error_exit(void)
@@ -126,12 +121,14 @@ void main(void)
   w5100_config(eth_init);
 
   {
-    char buffer[0x1000];
+    char *http = malloc(0x1000);
 
-    if (!w5100_http_open(url_ip, url_port, url_selector, buffer, sizeof(buffer)))
+    if (!http || !w5100_http_open(url_ip, url_port, url_selector, http, 0x1000))
     {
       return;
     }
+
+    free(http);
   }
 
   clrscr();
