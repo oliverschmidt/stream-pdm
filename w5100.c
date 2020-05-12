@@ -49,7 +49,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma optimize      (on)
 #pragma static-locals (on)
 
-#include "../inc/ip65.h"
+#include <ip65.h>
+
 #include "w5100.h"
 
 #define MIN(a,b) (((a)<(b))?(a):(b))

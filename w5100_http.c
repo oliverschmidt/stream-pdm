@@ -30,7 +30,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdio.h>
 #include <string.h>
 
-#include "../inc/ip65.h"
+#include <ip65.h>
+
 #include "w5100.h"
 #include "w5100_http.h"
 
