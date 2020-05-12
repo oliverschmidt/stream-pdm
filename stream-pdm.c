@@ -74,10 +74,15 @@ void main(void)
     }
   }
 
-  printf("- %d\n\nInitializing %s ", eth_init, eth_name);
+  printf("- %d\n\nInitializing ", eth_init);
   if (ip65_init(eth_init))
   {
     error_exit();
+  }
+  if (strcmp(eth_name, "Uthernet II"))
+  {
+    printf("- No Uthernet II\n");
+    exit(EXIT_FAILURE);
   }
 
   // Abort on Ctrl-C to be consistent with Linenoise
