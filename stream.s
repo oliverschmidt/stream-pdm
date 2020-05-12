@@ -5,17 +5,18 @@
 .macpack    apple2
 .pc02
 
-src         := $00
-dst         := $02
-rd_count    := $04
-wr_count    := $05
-scroll_row  := $06
-scroll_col  := $07
-scroll_opc  := $08
+; free zero page locations according to ProDOS TechRefMan A.4
+src         := $CE
+dst         := $D6
+rd_count    := $EB
+wr_count    := $EC
+scroll_row  := $ED
+scroll_col  := $EE
+scroll_opc  := $EF
 
 program     := $100B        ; adressed via jmp_table !
 buffer      := $9000
-zp_save     := $9100
+physical    := $9100
 
 px          = $8F           ; force page crossing
 silence     = $FF
@@ -118,22 +119,15 @@ chr:lda a:$0000,x           ; patched
 
 
 stream:
-    ; Save zero page
-    ldx #$00
-:   lda $00,x
-    sta zp_save,x
-    inx
-    bne :-
-
     ; Crate unrolled loop program
     jsr unroll
 
-    ; Create socket 0 physical read memory lookup table in zero page
+    ; Create socket 0 physical read memory lookup table
     ldx #$00
 :   txa
     and #>$1FFF
     ora #>$6000
-    sta $00,x
+    sta physical,x
     inx
     bne :-
 
@@ -151,13 +145,6 @@ stream:
 
     ; Run unrolled loop program
     jsr program
-
-    ; Restore zero page
-    ldx #$00
-:   lda zp_save,x
-    sta $00,x
-    inx
-    bne :-
 
     ; Switch to text screen
     bit $C051
@@ -473,17 +460,6 @@ scroll_patch:
 :.endmacro
 
 
-; 14 bytes, 9 cycles
-.macro      spkr_long
-    lsr a                   ;   2
-    bcs :+                  ;   2   3
-    nop                     ;   2
-    bra :++                 ;   3
-    .res 5
-:   bit $C030               ;       4
-:.endmacro
-
-
 ; 13 bytes, 9 cycles
 .macro      spkr_jsr    addr
     lsr a                   ;   2
@@ -550,8 +526,8 @@ recv_prolog:
     spkr                    ; bit 2
     ldx $C0F7               ; high byte
     spkr                    ; bit 3
-    ldy $00,x               ; high byte -> physical
-    spkr_long               ; bit 4
+    ldy physical,x          ; high byte -> physical
+    spkr                    ; bit 4
     ldx $C0F7               ; low byte
     spkr                    ; bit 5
     sty $C0F5               ; read addr high
