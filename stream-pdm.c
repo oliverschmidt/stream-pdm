@@ -1,3 +1,4 @@
+#include <cc65.h>
 #include <ctype.h>
 #include <fcntl.h>
 #include <conio.h>
@@ -60,6 +61,11 @@ void main(void)
   char *url;
 
   videomode(VIDEOMODE_80COL);
+
+  if (doesclrscrafterexit())
+  {
+    atexit(confirm_exit);
+  }
 
   {
     int file;
