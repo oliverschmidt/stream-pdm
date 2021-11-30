@@ -119,7 +119,7 @@ chr:lda a:$0000,x           ; patched
 
 
 stream:
-    ; Crate unrolled loop program
+    ; Create unrolled loop program
     jsr unroll
 
     ; Create socket 0 physical read memory lookup table
