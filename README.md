@@ -3,7 +3,7 @@ Stream-PDM simultaneously receives Pulse-Density-Modulation Sound from any HTTP 
 
 Hardware requirements:
 * Enhanced //e or IIgs
-* [Uthernet II](http://a2retrosystems.com/products.htm) in any slot
+* [Uthernet II](https://a2retrosystems.com/products.htm) in any slot
 
 To built Stream-PDM:
 * Get [cc65](https://cc65.github.io/)
